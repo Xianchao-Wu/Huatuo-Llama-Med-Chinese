@@ -36,10 +36,10 @@ model_id = "EleutherAI/gpt-neox-20b"
 #model_id = "EleutherAI/gpt-j-6b"
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True, # NOTE, 4bit, bnb = bits and bytes
-    bnb_4bit_use_double_quant=True, # NOTE double quantization, in the paper of 
-    bnb_4bit_quant_type="nf4",
-    bnb_4bit_compute_dtype=torch.bfloat16
-)
+    bnb_4bit_use_double_quant=True, # NOTE double quantization, in the paper of https://arxiv.org/abs/2305.14314
+    bnb_4bit_quant_type="nf4", # NOTE
+    bnb_4bit_compute_dtype=torch.bfloat16 # NOTE
+) # 这是四个配置，放一起，都在working TODO
 
 tokenizer = AutoTokenizer.from_pretrained(model_id, 
         cache_dir='/workspace/asr/Huatuo-Llama-Med-Chinese')
