@@ -57,6 +57,7 @@ def train(
     resume_from_checkpoint: str = None,  # either training checkpoint or final adapter
     prompt_template_name: str = "alpaca",  # The prompt template to use, will default to alpaca.
 ):
+    import ipdb; ipdb.set_trace()
     if int(os.environ.get("LOCAL_RANK", 0)) == 0:
         print(
             f"Training Alpaca-LoRA model with params:\n"
@@ -145,6 +146,7 @@ def train(
         return result
 
     def generate_and_tokenize_prompt(data_point):
+        #import ipdb; ipdb.set_trace()
         full_prompt = prompter.generate_prompt(
             data_point["instruction"],
             data_point["input"],
@@ -163,6 +165,7 @@ def train(
             ] * user_prompt_len + tokenized_full_prompt["labels"][
                 user_prompt_len:
             ]  # could be sped up, probably
+        #import ipdb; ipdb.set_trace()
         return tokenized_full_prompt
 
     model = prepare_model_for_int8_training(model)
@@ -175,7 +178,8 @@ def train(
         bias="none",
         task_type="CAUSAL_LM",
     )
-    model = get_peft_model(model, config)
+    import ipdb; ipdb.set_trace()
+    model = get_peft_model(model, config) # NOTE TODO
 
     if data_path.endswith(".json") or data_path.endswith(".jsonl"):
         data = load_dataset("json", data_files=data_path)
@@ -263,8 +267,8 @@ def train(
 
     if torch.__version__ >= "2" and sys.platform != "win32":
         model = torch.compile(model)
-
-    trainer.train(resume_from_checkpoint=resume_from_checkpoint)
+    import ipdb; ipdb.set_trace()
+    trainer.train(resume_from_checkpoint=resume_from_checkpoint) # NOTE
 
     model.save_pretrained(output_dir)
 

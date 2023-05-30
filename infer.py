@@ -23,7 +23,6 @@ def load_instruction(instruct_dir):
             input_data.append(d)
     return input_data
 
-
 def main(
     load_8bit: bool = False,
     base_model: str = "",
@@ -34,12 +33,13 @@ def main(
     # The prompt template to use, will default to med_template.
     prompt_template: str = "med_template",
 ):
+    import ipdb; ipdb.set_trace()
     prompter = Prompter(prompt_template)
-    tokenizer = LlamaTokenizer.from_pretrained(base_model)
+    tokenizer = LlamaTokenizer.from_pretrained(base_model) # 'decapoda-research/llama-7b-hf'
     model = LlamaForCausalLM.from_pretrained(
-        base_model,
-        load_in_8bit=load_8bit,
-        torch_dtype=torch.float16,
+        base_model, # 'decapoda-research/llama-7b-hf'
+        load_in_8bit=load_8bit, # False
+        torch_dtype=torch.float16, # 使用fp16作为初始化的时候的精度设置
         device_map="auto",
     )
     if use_lora:
@@ -94,6 +94,7 @@ def main(
         return prompter.get_response(output)
 
     def infer_from_json(instruct_dir):
+        import ipdb; ipdb.set_trace()
         input_data = load_instruction(instruct_dir)
         for d in input_data:
             instruction = d["instruction"]
@@ -108,6 +109,7 @@ def main(
             print(model_output)
 
     if instruct_dir != "":
+        import ipdb; ipdb.set_trace()
         infer_from_json(instruct_dir)
     else:
         for instruction in [
@@ -122,4 +124,5 @@ def main(
 
 
 if __name__ == "__main__":
+    import ipdb; ipdb.set_trace()
     fire.Fire(main)
